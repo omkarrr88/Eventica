@@ -32,7 +32,9 @@
 - [Getting Started💥](#getting-started)
 - [Contributing Guidelines📑](#contributing-guidelines)
 - [Code Of Conduct📑](#code-of-conduct)
+- [Open Source Programs🥳](#this-repo-has-been-part-of-the-following-open-source-programs)
 - [Project Admin⚡](#project-admin)
+- [Project Contributors🫂](#project-contributors)
 - [Contributing is fun🧡](#contributing-is-fun)
 <br>
 
@@ -57,7 +59,7 @@ Welcome to Eventica, an ultimate guide to the dynamic and diverse events in Bang
 
 <h2>Overview⭐</h2>
 
-<h2>Live Project -- (https://eventica.netlify.app/)</h2>
+<h3>Live Project -- (https://eventica.netlify.app)</h3>
 
 <h3>Home/Main Page :-</h3>
 

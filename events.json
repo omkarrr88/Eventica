@@ -1,5 +1,23 @@
 [
     {
+        "title": "Build with AI: Gemini Hands-on Workshop",
+        "date": "01-03-2025",
+        "time": "10:30 AM - 2:00 PM",
+        "location": "Google Office, Kyoto West Bagmane, Doddanekkundi, Bengaluru, Karnataka 560048, India",
+        "description": "The Gemini family of LLMs has had several significant releases in 2025 already.",
+        "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/rp/8cce2a4c-aca3-4ce6-8e10-92bc4dad4443.jpg",
+        "website": "https://lu.ma/jkjscf3q"
+    },
+    {
+        "title": "AWS User Group Bengaluru",
+        "date": "01-03-2025",
+        "time": "9:30 AM - 12:30 PM",
+        "location": "AntStack | Fullstack Serverless Consulting Company, No 620, 3rd Floor, Dr Rajkumar Rd, 2nd Block, 1st Main, Rajajinagar, Bengaluru, Karnataka 560010, India",
+        "description": "Join us for the AWS User Group Bengaluru March 2025 meet-up for Amazon Q Developer update.",
+        "image": "https://secure.meetupstatic.com/photos/event/e/6/c/c/600_526379084.webp?w=750",
+        "website": "https://www.meetup.com/awsugblr/events/306079910"
+    },
+    {
         "title": "Aleph Zero Web3 Community Meetup",
         "date": "23-02-2025",
         "time": "5:00 PM - 7:30 PM",
@@ -18,13 +36,13 @@
         "website": "https://www.meetup.com/geekyants-events-meetup-group/events/306116129"
     },
     {
-        "title": "Bengaluru BITDEVS: Hands-on with Coinswap",
+        "title": "BrowserStack QA meetup",
         "date": "22-02-2025",
-        "time": "6:00 PM - 10:00 PM",
-        "location": "Olsen Spaces Sector 7, Site no, 1165, HSR Layout, Bengaluru, Karnataka 560102, India",
-        "description": "Ever wondered how to swap Bitcoin UTXOs in a completely private, trustless way — without relying on a centralized service.",
-        "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/60/a6bd6b19-1a41-4126-8ac8-0266d17ea8e9.png",
-        "website": "https://lu.ma/2h9qg4b6"
+        "time": "10:00 AM - 1:00 PM",
+        "location": "Postman, 310, 6th Main Rd, HAL 2nd Stage, Indiranagar, Bengaluru, Karnataka 560038, India",
+        "description": "Join us for our QA meetup of the BrowserStack Meetup group in Bangalore. This will be an In-Person event.",
+        "image": "https://secure.meetupstatic.com/photos/event/6/7/8/3/600_526346499.webp?w=750",
+        "website": "https://www.meetup.com/browserstack-meetup-group-bengaluru/events/305533505"
     },
     {
         "title": "Unlocking the Power of Atlassian",
@@ -42,7 +60,7 @@
         "location": "JFrog India Pvt. Ltd., 4th Floor, Bellandur, Bengaluru, Karnataka 560103, India",
         "description": "After a successful GitHub Copilot Workshop in January 2025, we are back again with the regular format of tech talks and community spotlight for February 2025.",
         "image": "https://secure.meetupstatic.com/photos/event/4/8/1/f/600_526218463.webp?w=384",
-        "website": "https://www.meetup.com/gittogether-bengaluru/events/305497951"
+        "website": "https://www.meetup.com/gittogether-bengaluru/events/306010406"
     },
     {
         "title": "ClickHouse Bangalore Meetup",
