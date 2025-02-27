@@ -258,6 +258,13 @@ mobileMenuBtn.addEventListener('click', () => {
     mobileMenuBtn.classList.toggle('active');
     navItems.classList.toggle('active');
 
+    // Toggle body scrolling for small devices
+    if (navItems.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+
     // Update accessibility attributes
     const isOpen = navItems.classList.contains('active');
     mobileMenuBtn.setAttribute('aria-expanded', isOpen);
@@ -271,6 +278,7 @@ document.addEventListener('click', (e) => {
         navItems.classList.remove('active');
         mobileMenuBtn.setAttribute('aria-expanded', 'false');
         mobileMenuBtn.setAttribute('aria-label', 'Open mobile menu');
+        document.body.style.overflow = 'auto';
     }
 });
 
@@ -281,6 +289,7 @@ window.addEventListener('resize', () => {
         navItems.classList.remove('active');
         mobileMenuBtn.setAttribute('aria-expanded', 'false');
         mobileMenuBtn.setAttribute('aria-label', 'Open mobile menu');
+        document.body.style.overflow = 'auto';
     }
 });
 
