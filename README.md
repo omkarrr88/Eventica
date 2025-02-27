@@ -126,6 +126,51 @@ git push origin <your_branch_name>
 - Celebrate 🥳 your success after your pull request is merged successfully.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+# Backend Setup Instructions
+
+
+1. Ensure Node.js and npm are installed on your system. You can verify installation by running:
+```
+node -v
+npm -v
+```
+
+2. Navigate to the backend directory:
+```
+cd server
+```
+
+3. Install the required dependencies:
+```
+npm install
+```
+
+4. Create a .env file in the backend root directory and add your environment variables. Here's an example structure:
+```
+MONGO_URI="mongodb+srv://<your_mongo_db_url>.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+SECRET_KEY="THIS_IS_A_JWT_SECRET"
+```
+
+5. Start the backend server using nodemon:
+```
+nodemon api/index.js
+```
+
+This will start the server in development mode. By default, it will run on http://localhost:3000.
+
+Test the API endpoints using tools like Postman or Thunder Client.
+
+Now for vercel Deployment:
+1. Login into vercel account
+2. Click on add project
+3. select `server` as root directory
+4. add this add env vars
+```
+MONGO_URI="mongodb+srv://<your_mongo_db_url>.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+SECRET_KEY="THIS_IS_A_JWT_SECRET"
+```
+And server will deployed on vercel
+
 <!-------------------------------------------------->
 
 <h2>Contributing Guidelines📑</h2>
