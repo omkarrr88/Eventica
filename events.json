@@ -1,26 +1,89 @@
 [
     {
-        "title": "Build with AI: Gemini Hands-on Workshop",
-        "date": "01-03-2025",
-        "time": "10:30 AM - 2:00 PM",
-        "location": "Google Office, Kyoto West Bagmane, Doddanekkundi, Bengaluru, Karnataka 560048, India",
-        "description": "The Gemini family of LLMs has had several significant releases in 2025 already.",
-        "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/rp/8cce2a4c-aca3-4ce6-8e10-92bc4dad4443.jpg",
-        "website": "https://lu.ma/jkjscf3q"
+        "title": "Google I/O Connect | India 2025",
+        "date": "23-07-2025",
+        "time": "8:30am - 5:30pm",
+        "location": "Bangalore International Exhibition Centre, Madanayakahalli, Bengaluru, Karnataka 562162, India",
+        "description": "Join us in Bengaluru to experience the latest innovations and announcements from Google I/O.",
+        "image": "https://services.google.com/fh/files/events/ioc25_web_hero_india.png",
+        "website": "https://rsvp.withgoogle.com/events/ioconnect-india-2025"
     },
     {
-        "title": "AWS User Group Bengaluru",
+        "title": "Devon's DevOps meet-up (In-Person)",
+        "date": "26-04-2025",
+        "time": "10:00am - 3:30pm",
+        "location": "DevOn Software, Devarabisanahalli, Bengaluru, Karnataka 560087, India",
+        "description": "Are you prepared to be part of the AI, DevOps & Cloud evolution? If the answer is a resounding yes, then get ready for some exciting news.",
+        "image": "https://secure.meetupstatic.com/photos/event/1/6/1/clean_456060353.webp",
+        "website": "https://www.meetup.com/cloudops-meetup-bangalore/events/306825177"
+    },
+    {
+        "title": "Kong Developer Day",
+        "date": "19-04-2025",
+        "time": "10:30am - 2:00pm",
+        "location": "NASDAQ INDIA Headquarters, Affluence, 72/1, St Mark's Rd, Ashok Nagar, Bengaluru, Karnataka 560001, India",
+        "description": "We are thrilled to invite you to our in-person Meetup in Bengaluru featuring Kong's Ross Kukulinski, VP Product Management, and Kong Konnect.",
+        "image": "https://secure.meetupstatic.com/photos/event/6/0/e/b/clean_517584811.webp",
+        "website": "https://www.meetup.com/kong-bengaluru/events/306409318"
+    },
+    {
+        "title": "TiDB User Day India 2025",
+        "date": "26-03-2025",
+        "time": "9:00am - 7:30pm",
+        "location": "JW Marriott Hotel Bengaluru, 24/1, Vittal Mallya Rd, Ashok Nagar, Bengaluru, Karnataka 560001, India",
+        "description": "Join us at TiDB User Day India 2025 to explore real-world use cases, gain insights into the latest trends, and learn best practices.",
+        "image": "https://secure.meetupstatic.com/photos/event/b/c/a/9/600_526488297.webp?w=750",
+        "website": "https://www.pingcap.com/tidb-user-day-india-2025"
+    },
+    {
+        "title": "New Relic Now Live Bangalore",
+        "date": "20-03-2025",
+        "time": "4:30pm - 8:30pm",
+        "location": "Shangri-La Bengaluru, No. 56, 6B, Palace Rd, Abshot Layout, Vasanth Nagar, Bengaluru, Karnataka 560001, India",
+        "description": "Join us in Bangalore to see how Intelligent Observability opens up unexpected possibilities.",
+        "image": "https://newrelic.com/sites/default/files/styles/16x9_600w/public/2025-02/NRN%20Live%20Bangalore-Drupal-600x338_2.webp?h=c74750f6&itok=VJbqZczx",
+        "website": "https://newrelic.com/events/2025-03-20/new-relic-now-live-bangalore"
+    },
+    {
+        "title": "Bangalore Founders & Tech Leaders Meetup",
+        "date": "03-03-2025",
+        "time": "6:00pm - 9:00pm",
+        "location": "WeWork Roshini Tech Hub, EPIP Zone, Bengaluru, Karnataka 560037, India",
+        "description": "Join us at the Civo Bangalore Meetup for an evening of networking, great food, and insightful conversations with founders.",
+        "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/8p/7a7f0456-398c-48d1-90b9-a27fda169210.png",
+        "website": "https://lu.ma/3gzzaiz0"
+    },
+    {
+        "title": "Be With BitGo - QA4Crypto",
         "date": "01-03-2025",
-        "time": "9:30 AM - 12:30 PM",
-        "location": "AntStack | Fullstack Serverless Consulting Company, No 620, 3rd Floor, Dr Rajkumar Rd, 2nd Block, 1st Main, Rajajinagar, Bengaluru, Karnataka 560010, India",
-        "description": "Join us for the AWS User Group Bengaluru March 2025 meet-up for Amazon Q Developer update.",
-        "image": "https://secure.meetupstatic.com/photos/event/e/6/c/c/600_526379084.webp?w=750",
-        "website": "https://www.meetup.com/awsugblr/events/306079910"
+        "time": "3:00pm - 8:00pm",
+        "location": "BitGo, 139, 5th Block, Koramangala, Bengaluru, Karnataka 560095, India",
+        "description": "Join us for an exclusive technical evening designed for engineers, developers, QA specialists, and Blockchain enthusiasts featuring an in-depth session on QA.",
+        "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/rl/f68d1fcf-d13a-45c8-bb7f-f84dda61f799.png",
+        "website": "https://lu.ma/yq0tjw40"
+    },
+    {
+        "title": "DevSecOps Meet",
+        "date": "01-03-2025",
+        "time": "10:00am - 4:30pm",
+        "location": "Microsoft Reactor Bengaluru, Lavelle Rd, Bengaluru, Karnataka 560001, India",
+        "description": "Join us for a day of insights and deep-dive knowledge on the cutting-edge intersection of CI/CD, AI, Java, and modern software development practices with Open Source.",
+        "image": "https://secure.meetupstatic.com/photos/event/2/c/3/7/600_525971319.webp?w=750",
+        "website": "https://www.meetup.com/bengaluru-devsecops-meetup-group/events/305472682"
+    },
+    {
+        "title": "SAP Inside Track Bengaluru 2025",
+        "date": "1-03-2025",
+        "time": "8:00am - 5:00pm",
+        "location": "SAP Labs India, Whitefield, Bengaluru, Karnataka 560066, India",
+        "description": "SAP Inside Track is a community-driven event where SAP professionals, developers, architects, and leaders come together.",
+        "image": "https://media.konfhub.com/event_poster/2025/January/25/1737817442144-96a1e5a5-80d7-4cf3-a161-c70125d1b477.png",
+        "website": "https://community.sap.com/t5/bengaluru-events/announcing-sap-inside-track-bengaluru-1st-march-2025/ev-p/13990380"
     },
     {
         "title": "Aleph Zero Web3 Community Meetup",
         "date": "23-02-2025",
-        "time": "5:00 PM - 7:30 PM",
+        "time": "5:00pm - 7:30pm",
         "location": "Draper Startup House for Entrepreneurs, 7th Block, Koramangala, Bengaluru, Karnataka 560095, India",
         "description": "Join us for an exciting Web3 and Blockchain journey at the Aleph Zero India Community Meetup.",
         "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/y2/73d34330-662f-44ff-a1bf-642fb0b1ef4e.jpg",
@@ -29,7 +92,7 @@
     {
         "title": "Build with AI",
         "date": "23-02-2025",
-        "time": "11:00 AM - 2:00 PM",
+        "time": "11:00am - 2:00pm",
         "location": "Google Office, Kyoto West, BAGMANE CONSTELLATION BUSINESS PARK, Bengaluru, Karnataka 560048, India",
         "description": "We are thrilled to announce the Build with AI Meetup!🚀 in collaboration with Google for Developers. Agenda will be shared soon.",
         "image": "https://secure.meetupstatic.com/photos/event/b/7/e/6/600_526247078.webp?w=384",
@@ -38,7 +101,7 @@
     {
         "title": "BrowserStack QA meetup",
         "date": "22-02-2025",
-        "time": "10:00 AM - 1:00 PM",
+        "time": "10:00am - 1:00pm",
         "location": "Postman, 310, 6th Main Rd, HAL 2nd Stage, Indiranagar, Bengaluru, Karnataka 560038, India",
         "description": "Join us for our QA meetup of the BrowserStack Meetup group in Bangalore. This will be an In-Person event.",
         "image": "https://secure.meetupstatic.com/photos/event/6/7/8/3/600_526346499.webp?w=750",
@@ -47,7 +110,7 @@
     {
         "title": "Unlocking the Power of Atlassian",
         "date": "19-02-2025",
-        "time": "3:30 PM - 8:00 PM",
+        "time": "3:30pm - 8:00pm",
         "location": "Radisson Blu Bengaluru Outer Ring Road, Marathahalli, Bengaluru, Karnataka 560037, India",
         "description": "Join us for an exciting Atlassian Community Bangalore Event, to explore Atlassian's System of Work.",
         "image": "https://res.cloudinary.com/startup-grind/image/upload/c_scale,w_2560/c_crop,h_640,w_2560,y_0.61_mul_h_sub_0.61_mul_640/c_crop,h_640,w_2560/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-atlassian/event_banners/MCP01512_7eGZptm.jpg",
@@ -56,7 +119,7 @@
     {
         "title": "GitTogether Bengaluru",
         "date": "15-02-2025",
-        "time": "9:00 AM - 1:00 PM",
+        "time": "9:00am - 1:00pm",
         "location": "JFrog India Pvt. Ltd., 4th Floor, Bellandur, Bengaluru, Karnataka 560103, India",
         "description": "After a successful GitHub Copilot Workshop in January 2025, we are back again with the regular format of tech talks and community spotlight for February 2025.",
         "image": "https://secure.meetupstatic.com/photos/event/4/8/1/f/600_526218463.webp?w=384",
@@ -65,7 +128,7 @@
     {
         "title": "ClickHouse Bangalore Meetup",
         "date": "08-02-2025",
-        "time": "10:30 AM - 1:30 PM",
+        "time": "10:30am - 1:30pm",
         "location": "WeWork Prestige Tech Park, 4th Floor, Kadubeesanahalli, Bengaluru, Karnataka 560103, India",
         "description": "Kick off 2025 with our very first Bangalore meetup of the year! We have a great lineup of speakers.",
         "image": "https://secure.meetupstatic.com/photos/event/1/b/9/0/600_525607056.webp?w=384",
@@ -74,7 +137,7 @@
     {
         "title": "Cubane Web3 Connect",
         "date": "02-02-2025",
-        "time": "4:00 PM - 7:00 PM",
+        "time": "4:00pm - 7:00pm",
         "location": "Draper Startup House for Entrepreneurs, 7th Block, Koramangala, Bengaluru, Karnataka 560095, India",
         "description": "Join us for Cubane Web3 Connect, an exciting event focused on Web3 technologies and networking with like-minded enthusiasts.",
         "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/79/adf3e469-017a-41ca-8c16-24b6f3e7be55",
@@ -83,7 +146,7 @@
     {
         "title": "Future of Software Development",
         "date": "01-02-2025",
-        "time": "10:00 AM - 2:00 PM",
+        "time": "10:00am - 2:00pm",
         "location": "Amazon Development Center, Aquila, Doddanekkundi, Bengaluru, Karnataka 560048, India",
         "description": "Join us for an insightful event focused on the future of software development.",
         "image": "https://secure.meetupstatic.com/photos/event/d/6/a/c/600_525834956.webp?w=384",
@@ -92,7 +155,7 @@
     {
         "title": "Extract Summit Local-Chapter India",
         "date": "31-01-2025",
-        "time": "5:00 PM - 8:00 PM",
+        "time": "5:00pm - 8:00pm",
         "location": "Microsoft Reactor Bengaluru, Lavelle Rd, Bengaluru, Karnataka 560001, India",
         "description": "Join us for an engaging evening of learning and networking at the Extract Summit Local Chapter in India, which is an unique opportunity.",
         "image": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F926024123%2F308014268092%2F1%2Foriginal.20250102-065340?w=940&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C47%2C1482%2C741&s=8cd0b2cf843c6289beca09d6cc54cb3b",
@@ -101,7 +164,7 @@
     {
         "title": "Mastering Kong: Custom Plugins Integration",
         "date": "25-01-2025",
-        "time": "10:30 AM - 2:00 PM",
+        "time": "10:30am - 2:00pm",
         "location": "DevRev Cloud India Private Limited, Doopanahalli, Indiranagar, Bengaluru, Karnataka 560038, India",
         "description": "Kong makes connecting APIs and microservices across today's hybrid, multi-cloud environments easier.",
         "image": "https://secure.meetupstatic.com/photos/event/a/3/b/c/600_525701916.webp?w=384",
@@ -110,7 +173,7 @@
     {
         "title": "AI x Finance",
         "date": "24-01-2025",
-        "time": "1:00 PM - 4:00 PM",
+        "time": "1:00pm - 4:00pm",
         "location": "Intuit Campus 8, EcoSpace, Bellandur, Bengaluru, Karnataka 560103, India",
         "description": "Join the city's brightest minds and innovators for an exclusive dive into the future of AI and finance. Register now before it's too late and join for an exciting day.",
         "image": "https://secure.meetupstatic.com/photos/event/a/d/a/3/600_525524451.webp?w=384",
@@ -119,7 +182,7 @@
     {
         "title": "AWS AI Conclave Bengaluru",
         "date": "24-01-2025",
-        "time": "9:00 AM - 5:00 PM",
+        "time": "9:00am - 5:00pm",
         "location": "Sheraton Grand Hotel, Whitefield, Bengaluru, Karnataka 560048, India",
         "description": "Join us at the 8th edition of AWS AI Conclave Bengaluru - Generative AI and Data edition that brings together industry leaders, innovators, and forward-thinking organizations.",
         "image": "https://analyticsindiamag.com/wp-content/uploads/2024/12/Image_20241230_140921_825.jpeg",
@@ -128,7 +191,7 @@
     {
         "title": "DeCODE DevSecOps",
         "date": "19-01-2025",
-        "time": "10:30 AM - 1:00 PM",
+        "time": "10:30am - 1:00pm",
         "location": "COWRKS Residency Road, Ashok Nagar, Bengaluru, Karnataka 560025, India",
         "description": "Join us at the DeCODE DevSecOps - Bangalore Meetup by VivaOps for an exciting meetup for developers, DevOps enthusiasts, and tech professionals.",
         "image": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F929379023%2F2303382243543%2F1%2Foriginal.20250107-093329?crop=focalpoint&fit=crop&w=940&auto=format%2Ccompress&q=75&sharp=10&fp-x=0.005&fp-y=0.005&s=b3e6742c03b821cfc8e77426117b97bc",
@@ -137,7 +200,7 @@
     {
         "title": "DevTools Day, Bengaluru",
         "date": "18-01-2025",
-        "time": "10:00 AM - 3:00 PM",
+        "time": "10:00am - 3:00pm",
         "location": "Nokia Solutions and Networks Pvt Ltd L5 Building, Manayata Tech Park, Bengaluru, Karnataka 560045, India",
         "description": "Join us for the 5th edition of DevTools Day Bengaluru, a community-driven event dedicated to exploring cutting-edge developer tools.",
         "image": "https://secure.meetupstatic.com/photos/event/2/3/2/8/600_525069000.webp?w=384",
@@ -146,7 +209,7 @@
     {
         "title": "Join Us for an Exclusive Tech Community Meetup",
         "date": "18-01-2025",
-        "time": "9:30 AM - 1:30 PM",
+        "time": "9:30am - 1:30pm",
         "location": "Databricks India Private Limited, 4th Floor, Block L Embassy Tech Village, Bellandur, Bengaluru, Karnataka 560103, India",
         "description": "Are you ready to explore the integration journey of TiDB with Databricks?",
         "image": "https://secure.meetupstatic.com/photos/event/c/4/0/8/600_525590184.webp?w=384",
@@ -155,7 +218,7 @@
     {
         "title": "Build w/AI Demo Day Bangalore",
         "date": "12-01-2025",
-        "time": "2:30 PM - 6:30 PM",
+        "time": "2:30pm - 6:30pm",
         "location": "WeWork Vaishnavi Signature, Bellandur, Varthur, Bengaluru, Karnataka 560103, India",
         "description": "Get ready for an unforgettable afternoon at the Build w/AI Demo Day in Bangalore.",
         "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/om/4aba23b4-e0f7-42fd-8f79-e5926dfde641",
@@ -164,7 +227,7 @@
     {
         "title": "ReactPlay Bangalore Meetup",
         "date": "11-01-2025",
-        "time": "9:30 AM - 2:00 PM",
+        "time": "9:30am - 2:00pm",
         "location": "Microsoft Reactor Bengaluru, Lavelle Rd, Bengaluru, Karnataka 560001, India",
         "description": "In this meetup, we will explore the talks on the latest features and technologies in tech. This meetup is open to all experience levels.",
         "image": "https://secure.meetupstatic.com/photos/event/5/5/e/1/600_525321985.webp?w=384",
@@ -173,7 +236,7 @@
     {
         "title": "AI Community Day",
         "date": "08-01-2025",
-        "time": "9:00 AM - 6:00 PM",
+        "time": "9:00am - 6:00pm",
         "location": "Microsoft Reactor Bengaluru, Lavelle Rd, Bengaluru, Karnataka 560001, India",
         "description": "Welcome to AI Community Day! A day where AI enthusiasts, developers, and innovators come together to geek out, connect, and share knowledge around artificial intelligence!",
         "image": "https://secure.meetupstatic.com/photos/event/9/7/c/2/600_525278850.webp?w=384",
@@ -182,7 +245,7 @@
     {
         "title": "Microsoft AI Tour",
         "date": "07-01-2025",
-        "time": "8:00 AM - 5:00 PM",
+        "time": "8:00am - 5:00pm",
         "location": "Bangalore International Exhibition Centre, Madanayakahalli, Bengaluru, Karnataka 562162, India",
         "description": "Microsoft AI Tour in Bengaluru. Learn from industry experts and Microsoft engineering teams with hands-on technical workshops.",
         "image": "https://media.licdn.com/dms/image/sync/v2/D5627AQHMHdzD9IFYHg/articleshare-shrink_800/articleshare-shrink_800/0/1733810952528?e=2147483647&v=beta&t=Gei_Ds62Wpo10DehqEVWT4N6KVQ4JhKIZzgXek8ZyOs",
@@ -191,7 +254,7 @@
     {
         "title": "CellStrat AI Lab Meetup",
         "date": "04-01-2025",
-        "time": "10:00 AM - 1:30 PM",
+        "time": "10:00am - 1:30pm",
         "location": "WeWork Vaishnavi Signature, Bellandur, Varthur, Bengaluru, Karnataka 560103, India",
         "description": "This meetup is about the new AI Agents, those AI systems that are coming to be essential human companions for every task.",
         "image": "https://secure.meetupstatic.com/photos/event/3/5/2/5/600_519673605.webp?w=384",
@@ -200,7 +263,7 @@
     {
         "title": "Azure Developer Day",
         "date": "28-12-2024",
-        "time": "11:00 AM - 2:00 PM",
+        "time": "11:00am - 2:00pm",
         "location": "Microsoft Luxor North Tower, Mahadevapura, Bengaluru, Karnataka 560048, India",
         "description": "Dive into the future of cloud development at Azure Developer Day! This event is specially crafted for developers and professionals.",
         "image": "https://bit.ly/4gu1m1d",
@@ -209,7 +272,7 @@
     {
         "title": "TSOW x greytHR x SpringVerify HR Meetup",
         "date": "21-12-2024",
-        "time": "4:00 PM - 7:00 PM",
+        "time": "4:00pm - 7:00pm",
         "location": "Bloom Hotel, Sector 6, HSR Layout, Bengaluru, Karnataka 560102, India",
         "description": "🎉 Hello Bangalore! 🎉 Are you ready for an exciting event of networking and growth? TSOW is thrilled to partner with greytHR and SpringVerify.",
         "image": "https://bit.ly/3PkWkYB",
@@ -218,7 +281,7 @@
     {
         "title": "DevFest Bangalore Ext",
         "date": "21-12-2024",
-        "time": "10:00 AM - 1:30 PM",
+        "time": "10:00am - 1:30pm",
         "location": "AQUERALABS INDIA, 2nd Floor, Whitefield, Bengaluru, Karnataka 560066, India",
         "description": "Closing out an incredible year, DevFest Bangalore Ext 2024 is here to bring the tech community together before we say Good Bye to 2024! Join us for exciting day.",
         "image": "https://res.cloudinary.com/startup-grind/image/upload/c_scale,w_2560/c_crop,h_640,w_2560,y_0.0_mul_h_sub_0.0_mul_640/c_crop,h_640,w_2560/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/event_banners/Banner_pxJs8fI.png",
@@ -227,7 +290,7 @@
     {
         "title": "Beyond the Resume",
         "date": "20-12-2024",
-        "time": "6:00 PM - 8:00 PM",
+        "time": "6:00pm - 8:00pm",
         "location": "Microsoft Reactor Bengaluru, Lavelle Rd, Bengaluru, Karnataka 560001, India",
         "description": "Embark on a transformative journey as I share my personal experiences and strategies that turned me from a newbie to a seasoned professional, come and join us.",
         "image": "https://secure.meetupstatic.com/photos/event/c/b/8/c/600_525052108.webp?w=384",
@@ -236,7 +299,7 @@
     {
         "title": "MagicBall - AI Hacks: Decoding AI in Action",
         "date": "16-12-2024",
-        "time": "6:00 PM - 8:00 PM",
+        "time": "6:00pm - 8:00pm",
         "location": "Hasura Bangalore, Koramangala, Bengaluru, Karnataka 560034, India",
         "description": "AI Engineers of Bangalore, Presenting: MagicBall - AI Hacks: Decoding AI in Action hosted by Grayscale Ventures in partnership with MagicBall.",
         "image": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,background=white,quality=75,width=280,height=280/event-covers/ra/c0b60711-5aa2-4a9f-aabe-61c038feb79a",
