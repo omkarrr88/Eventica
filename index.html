@@ -58,14 +58,15 @@
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                <ul class="nav-links">
+                <ul class="nav-links" id="nav-links">
                     <li><a href="./index.html#home"><i class="fas fa-house"></i> Home</a></li>
                     <li><a href="./assets/about/about.html"><i class="fas fa-circle-info"></i> About</a></li>
                     <li><a href="./index.html#events"><i class="fas fa-calendar-alt"></i> Upcoming Events</a></li>
                     <li><a href="./assets/pastevents/pastevents.html"><i class="fas fa-calendar-check"></i> Past Events</a></li>
                     <li><a href="assets/contributors/contributor.html"><i class="fa-solid fa-users"></i> Contributors</a></li>
                     <li><a href="./assets/contact/contact.html"><i class="fas fa-phone"></i> Contact</a></li>
-                    <li><a href="./assets/register/register.html"><i class="fa-solid fa-user"></i> Register</a></li>
+                    <!-- FIXED: Updated register link path -->
+                    <li id="auth-link"><a href="./assets/register/register.html"><i class="fa-solid fa-user"></i> Login</a></li>
                 </ul>
             </div>
             <div class="theme-hamburger">
@@ -176,7 +177,7 @@
             </div>
 
             <div class="testimonial-grid hidden extra-testimonials">
-                <!-- Additional testimonials from your second page -->
+                <!-- Additional testimonials -->
                 <div class="testimonial-card blue">
                     <div class="rating">⭐⭐⭐⭐⭐</div>
                     <p class="testimonial-text">Working with Eventica was an absolute pleasure. Their attention to detail and professional service made our corporate conference truly memorable.</p>
@@ -205,7 +206,7 @@
                     <div class="rating">⭐⭐⭐⭐⭐</div>
                     <p class="testimonial-text">The team at Eventica went above and beyond our expectations. They created an unforgettable experience that our guests are still talking about.</p>
                     <div class="profile">
-                        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Sarah Chen" class="profile-img">
+                        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Tim Wilson" class="profile-img">
                         <div class="profile-info">
                             <h4>Tim Wilson</h4>
                             <div class="role">Director</div>
@@ -217,7 +218,7 @@
                     <div class="rating">⭐⭐⭐⭐⭐</div>
                     <p class="testimonial-text">The team at Eventica went above and beyond our expectations. They created an unforgettable experience that our guests are still talking about.</p>
                     <div class="profile">
-                        <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Sarah Chen" class="profile-img">
+                        <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Michael Angolo" class="profile-img">
                         <div class="profile-info">
                             <h4>Michael Angolo</h4>
                             <div class="role">Event Coordinator</div>
@@ -288,8 +289,87 @@
         <i class="fas fa-chevron-up"></i>
     </a>
 
+    <!-- FIXED: Properly placed JavaScript -->
     <script src="./script.js"></script>
     <script src="./assets/customcursor.js"></script>
+    
+    <!-- FIXED: Authentication Status Script -->
+    <script>
+        // Authentication status management
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigationForAuth();
+        });
+
+        function updateNavigationForAuth() {
+            const token = localStorage.getItem('eventica_token');
+            const user = localStorage.getItem('eventica_user');
+            
+            // Find navigation links
+            const navLinks = document.querySelector('#nav-links');
+            const authLink = document.querySelector('#auth-link');
+            
+            if (token && user) {
+                // User is logged in
+                const userData = JSON.parse(user);
+                
+                // Update the auth link to show dashboard and logout
+                if (authLink) {
+                    authLink.innerHTML = `
+                        <a href="./Eventica/dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    `;
+                }
+                
+                // Add logout option
+                const logoutLi = document.createElement('li');
+                logoutLi.innerHTML = `<a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout (${userData.username})</a>`;
+                navLinks.appendChild(logoutLi);
+                
+                console.log(`✅ User ${userData.username} is logged in`);
+            } else {
+                // User is not logged in - keep default login link
+                console.log('❌ User is not logged in');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('eventica_token');
+                localStorage.removeItem('eventica_user');
+                
+                // Show logout message
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 20px;
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                    border-radius: 8px;
+                    z-index: 10000;
+                    font-weight: 500;
+                `;
+                messageDiv.textContent = 'Logged out successfully!';
+                document.body.appendChild(messageDiv);
+                
+                // Remove message and reload page
+                setTimeout(() => {
+                    messageDiv.remove();
+                    window.location.reload();
+                }, 2000);
+            }
+        }
+
+        // Global functions for other scripts
+        window.eventica = {
+            isLoggedIn: () => localStorage.getItem('eventica_token') !== null,
+            getCurrentUser: () => {
+                const userStr = localStorage.getItem('eventica_user');
+                return userStr ? JSON.parse(userStr) : null;
+            },
+            logout: logout
+        };
+    </script>
 </body>
 
 </html>

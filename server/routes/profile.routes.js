@@ -1,13 +1,10 @@
-import express from 'express'
-import { deleteProfile, editProfile, getProfile } from '../controllers/profile.controller.js'
+import express from "express";
+import { getProfile, editProfile, deleteProfile } from "../controllers/profile.controller.js";
 
+const profileRouter = express.Router();
 
-const profileRouter  = express.Router()
+profileRouter.get("/getprofile", getProfile);
+profileRouter.post("/editprofile", editProfile);
+profileRouter.delete("/deleteProfile", deleteProfile);
 
-
-profileRouter.get('/getprofile',getProfile)
-profileRouter.post('/editprofile', editProfile)
-profileRouter.delete('/deleteProfile', deleteProfile)
-
-
-export {profileRouter}
+export { profileRouter };

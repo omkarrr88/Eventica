@@ -329,6 +329,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Add to your main script.js or create auth-check.js
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('eventica_token');
+    const user = JSON.parse(localStorage.getItem('eventica_user') || '{}');
+    
+    // Update navigation based on auth state
+    const navbar = document.querySelector('.nav-links');
+    if (navbar) {
+        if (token) {
+            // User is logged in - show dashboard link and logout
+            const authHTML = `
+                <li><a href="/dashboard.html">Dashboard</a></li>
+                <li><a href="#" onclick="logout()">Logout (${user.username})</a></li>
+            `;
+            navbar.innerHTML += authHTML;
+        } else {
+            // User not logged in - show login link
+            const authHTML = `
+                <li><a href="/assets/register/register.html">Login</a></li>
+            `;
+            navbar.innerHTML += authHTML;
+        }
+    }
+});
+
+
 // Search bar
 const searchButton = document.querySelector('.search-button');
 const searchInput = document.querySelector('.search-input');
