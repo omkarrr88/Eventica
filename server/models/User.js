@@ -25,6 +25,20 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: [6, 'Password must be at least 6 characters']
     },
+    // OTP fields
+    otp: {
+        type: String,
+        default: null
+    },
+    otpExpiry: {
+        type: Date,
+        default: null
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+    // Existing fields
     registeredEvents: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event'
@@ -36,5 +50,8 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// Index for OTP expiry cleanup
+userSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 0 });
 
 export default mongoose.model('User', userSchema);

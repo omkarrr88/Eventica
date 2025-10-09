@@ -11,7 +11,7 @@
     <div class="container">
         <div class="forms-container">
             <div class="signin-signup">
-                <!-- FIXED: Sign In Form -->
+                <!-- Sign In Form -->
                 <form class="sign-in-form" method="POST">
                     <h2 class="title">Sign in</h2>
                     <div class="input-field">
@@ -41,48 +41,71 @@
                     </div>
                 </form>
 
-                <!-- FIXED: Sign Up Form -->
+                <!-- Sign Up Form with OTP Integration -->
                 <form class="sign-up-form" method="POST">
                     <h2 class="title">Sign up</h2>
-                    <div class="input-field">
-                        <i class="fas fa-user"></i>
-                        <input type="text" name="username" placeholder="Username" required minlength="3" maxlength="30" autocomplete="username" />
-                    </div>
-                    <div class="input-field">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="Email" required autocomplete="email" />
-                    </div>
-                    <div class="input-field">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" name="password" placeholder="Password" required minlength="6" autocomplete="new-password" />
-                    </div>
-                    <input type="submit" value="Sign up" class="btn" />
                     
-                    <p class="social-text">Or Sign up with social platforms</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
+                    <!-- Step 1: Email Verification -->
+                    <div id="email-step" class="step-container">
+                        <div class="input-field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" id="signup-email" placeholder="Email" required autocomplete="email" />
+                        </div>
+                        <button type="button" id="get-otp-btn" class="btn">Get OTP</button>
+                        <p class="step-info">Enter your email to receive verification code</p>
+                    </div>
+
+                    <!-- Step 2: OTP Verification -->
+                    <div id="otp-step" class="step-container" style="display: none;">
+                        <div class="input-field">
+                            <i class="fas fa-key"></i>
+                            <input type="text" name="otp" id="otp-input" placeholder="Enter 6-digit OTP" maxlength="6" pattern="[0-9]{6}" />
+                        </div>
+                        <button type="button" id="verify-otp-btn" class="btn">Verify OTP</button>
+                        <div class="otp-actions">
+                            <button type="button" id="resend-otp-btn" class="btn-link" disabled>
+                                Resend OTP <span id="resend-timer"></span>
+                            </button>
+                            <button type="button" id="change-email-btn" class="btn-link">Change Email</button>
+                        </div>
+                        <p class="step-info">Check your email for the verification code</p>
+                    </div>
+
+                    <!-- Step 3: Complete Registration -->
+                    <div id="registration-step" class="step-container" style="display: none;">
+                        <div class="input-field">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="username" id="signup-username" placeholder="Username" required autocomplete="username" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="verified-email" placeholder="Email (Verified)" readonly />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password" id="signup-password" placeholder="Password" required autocomplete="new-password" />
+                        </div>
+                        <input type="submit" value="Create Account" class="btn solid" />
+                        <p class="step-info">Complete your registration details</p>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="progress-indicator">
+                        <div class="progress-step active" data-step="1">1</div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="2">2</div>
+                        <div class="progress-line"></div>
+                        <div class="progress-step" data-step="3">3</div>
                     </div>
                 </form>
             </div>
         </div>
-
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
                     <h3>New here ?</h3>
                     <p>
-                        Discover amazing events in Bangalore! Join our community and never miss out on exciting happenings in the city.
+                        Join Eventica today and unlock a world of amazing events galore! Join our community and never miss out on exciting happenings in the city.
                     </p>
                     <button class="btn transparent" id="sign-up-btn">
                         Sign up
