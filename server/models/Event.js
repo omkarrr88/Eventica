@@ -32,6 +32,16 @@ const eventSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
+    // Reviews: array of rating + comment
+    reviews: [{
+        userName: { type: String },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        rating: { type: Number, min: 1, max: 5 },
+        comment: { type: String },
+        createdAt: { type: Date, default: Date.now }
+    }],
+    averageRating: { type: Number, default: 0 },
+    reviewCount: { type: Number, default: 0 },
     isActive: {
         type: Boolean,
         default: true

@@ -63,8 +63,30 @@ function createEventCard(event, isPastEvent = false) {
         formattedDate = 'Date not available';
     }
 
+    // helper: safe base64 for Unicode strings, fallback to small hash
+    function safeClientIdSeed(str) {
+        try {
+            // encode Unicode safely for btoa
+            const encoded = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            });
+            return btoa(encoded).replace(/=+$/, '');
+        } catch (e) {
+            // fallback: small djb2-like hash
+            let h = 5381;
+            for (let i = 0; i < str.length; i++) {
+                h = ((h << 5) + h) + str.charCodeAt(i);
+                h = h & h;
+            }
+            return Math.abs(h).toString(36);
+        }
+    }
+
+    // ensure we have a stable client id for static events
+    const clientId = event._id ? event._id : ('client_' + safeClientIdSeed((event.title || '') + '::' + (event.date || '')));
+
     return `
-        <div class="${isPastEvent ? 'past-event-card' : 'event-card'}">
+        <div class="${isPastEvent ? 'past-event-card' : 'event-card'}" data-client-id="${clientId}">
             <div class="event-background">
                 <img src="${event.image}" alt="Background" class="blurred-image">
             </div>
@@ -77,10 +99,23 @@ function createEventCard(event, isPastEvent = false) {
                     <p class="${isPastEvent ? 'past-event-location' : 'event-location'}">${event.location || 'Location not specified'}</p>
                     <p class="${isPastEvent ? 'past-event-description' : 'event-description'}">${event.description || 'No description available'}</p>
                     <a href="${event.website || '#'}" target="_blank" rel="noopener noreferrer" class="${buttonClass}">${buttonText}</a>
+                    ${isPastEvent ? `<div class="event-rating">${renderStars(event.averageRating || 0)} <span class="rating-text">${((event.averageRating||0).toFixed(1))} / 5</span> <button class="review-btn" data-event-id="${event._id || ''}" data-client-id="${clientId}">Review</button></div>` : ''}
                 </div>
             </a>
         </div>
     `;
+}
+
+// Helper to render star icons for average rating (up to 5)
+function renderStars(avg) {
+    // Render stars rounded to nearest integer for reliable display
+    const rounded = Math.round(avg || 0);
+    let out = '';
+    for (let i = 0; i < 5; i++) {
+        if (i < rounded) out += '<span class="star full">★</span>';
+        else out += '<span class="star">★</span>';
+    }
+    return out;
 }
 
 // Function to populate event grids
@@ -113,7 +148,11 @@ function populateEventGrids(events) {
     // Populate past events grid
     const pastEventGrid = document.getElementById('past-events');
     if (pastEventGrid) {
+        // store raw past events for filtering
+        window.__pastEventsStore = pastEvents; // exposed for debugging
         pastEventGrid.innerHTML = pastEvents.map(event => createEventCard(event, true)).join('');
+        // populate location filter options (unique locations)
+        populateLocationFilter(pastEvents);
     }
     // console.log(`Populated ${upcomingEvents.length} upcoming events and ${pastEvents.length} past events.`);
 }
@@ -361,19 +400,18 @@ const searchInput = document.querySelector('.search-input');
 
 if (searchButton && searchInput) {
     const handleSearch = () => {
-        const query = searchInput.value.toLowerCase();
-        let events;
-
-        // Determine which page we are on and select the appropriate event cards
-        if (window.location.pathname.includes('pastevents')) {
-            events = document.querySelectorAll('.past-event-card');
-        } else {
-            events = document.querySelectorAll('.event-card');
+        // On past events page, use the unified filter pipeline which also respects date/location filters
+        if (window.location.pathname.includes('pastevents') && typeof applyPastFilters === 'function') {
+            applyPastFilters();
+            return;
         }
 
+        const query = searchInput.value.toLowerCase();
+        let events = document.querySelectorAll('.event-card');
+
         events.forEach(event => {
-            const title = event.querySelector('.event-title, .past-event-title').textContent.toLowerCase();
-            const description = event.querySelector('.event-description, .past-event-description').textContent.toLowerCase();
+            const title = event.querySelector('.event-title').textContent.toLowerCase();
+            const description = event.querySelector('.event-description').textContent.toLowerCase();
             if (query === '' || title.includes(query) || description.includes(query)) {
                 event.style.display = 'block'; // Show matching event or all events if query is empty
             } else {
@@ -385,6 +423,122 @@ if (searchButton && searchInput) {
     searchButton.addEventListener('click', handleSearch);
     searchInput.addEventListener('input', handleSearch);
 }
+
+// ------------------------
+// Past events filtering
+// ------------------------
+// Holds the last built list of past events (objects)
+window.__pastEventsStore = window.__pastEventsStore || [];
+
+function parseEventDateToISO(event) {
+    // event.date is DD-MM-YYYY
+    try {
+        const [d, m, y] = event.date.split('-').map(Number);
+        if (!d || !m || !y) return null;
+        const dt = new Date(Date.UTC(y, m - 1, d));
+        return dt; // UTC date object
+    } catch (e) {
+        return null;
+    }
+}
+
+function populateLocationFilter(events) {
+    const select = document.getElementById('filter-location');
+    if (!select) return;
+    const locations = Array.from(new Set(events.map(e => (e.location || '').trim()).filter(Boolean)));
+    // Clear existing but keep first 'All locations'
+    select.innerHTML = '<option value="">All locations</option>' + locations.map(loc => `<option value="${escapeHtml(loc)}">${loc}</option>`).join('');
+}
+
+function escapeHtml(unsafe) {
+    return unsafe.replace(/[&<"'>]/g, function (m) {
+        return ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        })[m];
+    });
+}
+
+function applyPastFilters() {
+    const fromInput = document.getElementById('filter-date-from');
+    const toInput = document.getElementById('filter-date-to');
+    const locSelect = document.getElementById('filter-location');
+    const query = (searchInput && searchInput.value || '').toLowerCase();
+
+    const fromDate = fromInput && fromInput.value ? new Date(fromInput.value) : null; // local date
+    const toDate = toInput && toInput.value ? new Date(toInput.value) : null;
+    const location = locSelect && locSelect.value ? locSelect.value.toLowerCase() : '';
+
+    const store = window.__pastEventsStore || [];
+    const filtered = store.filter(e => {
+        const dt = parseEventDateToISO(e);
+        // date range check (convert UTC date to local-date-only for comparison)
+        if (fromDate && (!dt || dt < Date.UTC(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()))) return false;
+        if (toDate && (!dt || dt > Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()))) return false;
+        // location check
+        if (location && !(e.location || '').toLowerCase().includes(location)) return false;
+        // search query check against title and description
+        if (query) {
+            const title = (e.title || '').toLowerCase();
+            const desc = (e.description || '').toLowerCase();
+            if (!title.includes(query) && !desc.includes(query)) return false;
+        }
+        return true;
+    });
+
+    const pastEventGrid = document.getElementById('past-events');
+    if (pastEventGrid) {
+        pastEventGrid.innerHTML = filtered.map(ev => createEventCard(ev, true)).join('');
+    }
+}
+
+// Wire filter inputs (if present)
+document.addEventListener('DOMContentLoaded', () => {
+    const fromInput = document.getElementById('filter-date-from');
+    const toInput = document.getElementById('filter-date-to');
+    const locSelect = document.getElementById('filter-location');
+    const resetBtn = document.getElementById('filter-reset');
+
+    if (fromInput) fromInput.addEventListener('change', applyPastFilters);
+    if (toInput) toInput.addEventListener('change', applyPastFilters);
+    if (locSelect) locSelect.addEventListener('change', applyPastFilters);
+    if (resetBtn) resetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (fromInput) fromInput.value = '';
+        if (toInput) toInput.value = '';
+        if (locSelect) locSelect.value = '';
+        if (searchInput) searchInput.value = '';
+        // repopulate full past events
+        const store = window.__pastEventsStore || [];
+        const pastEventGrid = document.getElementById('past-events');
+        if (pastEventGrid) pastEventGrid.innerHTML = store.map(ev => createEventCard(ev, true)).join('');
+    });
+
+    // Initialize flatpickr if available for consistent calendar UI
+    try {
+        if (typeof flatpickr === 'function') {
+            const fpOptions = {
+                altInput: true,
+                altFormat: 'd-m-Y',
+                dateFormat: 'Y-m-d', // ISO so JS Date can parse easily
+                allowInput: true,
+                wrap: false,
+                onChange: function(selectedDates, dateStr, instance) {
+                    // trigger filter when user picks a date
+                    applyPastFilters();
+                }
+            };
+            if (fromInput) flatpickr(fromInput, fpOptions);
+            if (toInput) flatpickr(toInput, fpOptions);
+        }
+    } catch (err) {
+        // flatpickr not available; native date inputs will still work
+        console.warn('flatpickr init failed or not loaded', err);
+    }
+});
 
 // Testimonials expansion functionality
 document.addEventListener("DOMContentLoaded", () => {
@@ -405,3 +559,190 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// ------------------------
+// Reviews modal & network
+// ------------------------
+(function() {
+    // Local reviews helpers for events without server _id
+    function getLocalReviews(clientId) {
+        try {
+            const raw = localStorage.getItem('local_reviews') || '{}';
+            const store = JSON.parse(raw);
+            return (store[clientId] || []);
+        } catch (e) { return []; }
+    }
+
+    function setLocalReviews(clientId, reviews) {
+        try {
+            const raw = localStorage.getItem('local_reviews') || '{}';
+            const store = JSON.parse(raw);
+            store[clientId] = reviews;
+            localStorage.setItem('local_reviews', JSON.stringify(store));
+        } catch (e) { console.error('Failed to save local reviews', e); }
+    }
+
+    function computeAverage(reviews) {
+        if (!reviews || reviews.length === 0) return 0;
+        const s = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
+        return s / reviews.length;
+    }
+    // Open modal when clicking any review button (delegated)
+    document.addEventListener('click', async function (e) {
+        const btn = e.target.closest && e.target.closest('.review-btn');
+        if (!btn) return;
+    const eventId = btn.getAttribute('data-event-id');
+    const clientId = btn.getAttribute('data-client-id') || btn.closest('.past-event-card')?.getAttribute('data-client-id');
+    if (!eventId && !clientId) return;
+
+        // set the target id on modal form
+        const modal = document.getElementById('review-modal');
+        const title = document.getElementById('review-target-title');
+        const existing = document.getElementById('existing-reviews');
+        if (!modal || !title) return;
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('show');
+
+        // find event title from the DOM or store
+        let eventTitle = '';
+        const card = btn.closest('.past-event-card');
+        if (card) {
+            const t = card.querySelector('.past-event-title');
+            if (t) eventTitle = t.textContent;
+        }
+        title.textContent = eventTitle ? `Review: ${eventTitle}` : 'Leave a review';
+
+        // require login for submitting reviews to server-backed events
+        const token = localStorage.getItem('eventica_token');
+
+        // fetch existing reviews (server-backed or local)
+        existing.innerHTML = '<p>Loading reviews…</p>';
+        try {
+            if (eventId) {
+                // If attempting to open a server-backed event's reviews and user is not logged in,
+                // still allow viewing reviews but block submission until login.
+                const resp = await fetch(`/api/events/${eventId}/reviews`);
+                if (!resp.ok) throw new Error('Failed to fetch reviews');
+                const data = await resp.json();
+                const reviews = data.reviews || [];
+                if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'Anonymous')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                // If not logged in, show a small note at the top of modal
+                if (!token) {
+                    existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
+                }
+            } else if (clientId) {
+                const reviews = getLocalReviews(clientId);
+                if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'You')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                if (!token) {
+                    existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
+                }
+            } else {
+                existing.innerHTML = '<p>No reviews available.</p>';
+            }
+        } catch (err) {
+            existing.innerHTML = '<p>Unable to load reviews.</p>';
+            console.error(err);
+        }
+
+        // attach eventId to form dataset for submit
+        const form = document.getElementById('review-form');
+        if (form) { form.dataset.eventId = eventId || ''; form.dataset.clientId = clientId || ''; }
+    });
+
+    // Close modal
+    document.getElementById('review-modal-close')?.addEventListener('click', () => {
+        const modal = document.getElementById('review-modal');
+        if (!modal) return;
+        modal.setAttribute('aria-hidden', 'true');
+        modal.classList.remove('show');
+    });
+
+    // Submit review
+    document.getElementById('review-form')?.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = e.currentTarget;
+    const eventId = form.dataset.eventId;
+    const clientId = form.dataset.clientId;
+    const rating = parseInt(document.getElementById('review-rating').value || 0, 10);
+    const comment = document.getElementById('review-comment').value || '';
+        if (!eventId && !clientId) return alert('Missing event identifier');
+
+        // enforce login for submitting reviews
+        const token2 = localStorage.getItem('eventica_token');
+        if (!token2) {
+            alert('You must be logged in to submit a review. Please log in first.');
+            return;
+        }
+
+        // Read token from localStorage (if user is logged in)
+        const token = localStorage.getItem('eventica_token');
+
+        try {
+            if (eventId) {
+                const resp = await fetch(`/api/events/${eventId}/reviews`, {
+                    method: 'POST',
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, token ? { 'Authorization': 'Bearer ' + token } : {}),
+                    body: JSON.stringify({ rating, comment })
+                });
+                if (resp.status === 401) {
+                    alert('You must be logged in to submit a review.');
+                    return;
+                }
+                if (!resp.ok) {
+                    const errText = await resp.text();
+                    throw new Error(errText || 'Failed to submit review');
+                }
+                const data = await resp.json();
+                // close modal
+                const modal = document.getElementById('review-modal');
+                if (modal) { modal.setAttribute('aria-hidden', 'true'); modal.classList.remove('show'); }
+                // update the card's rating display (if present)
+                const cardBtn = document.querySelector(`.review-btn[data-event-id="${eventId}"]`);
+                if (cardBtn) {
+                    const card = cardBtn.closest('.past-event-card');
+                    if (card) {
+                        const ratingEl = card.querySelector('.event-rating');
+                        if (ratingEl) {
+                            const avg = (data.averageRating || 0);
+                            ratingEl.innerHTML = `${renderStars(avg)} <span class="rating-text">${avg.toFixed(1)} / 5</span> <button class="review-btn" data-event-id="${eventId}">Review</button>`;
+                        }
+                    }
+                }
+                alert('Review submitted — thank you!');
+            } else if (clientId) {
+                // local store path
+                const reviews = getLocalReviews(clientId);
+                reviews.push({ userName: 'You', rating, comment, createdAt: new Date().toISOString() });
+                setLocalReviews(clientId, reviews);
+                const avg = computeAverage(reviews);
+                // update card
+                const cardBtn = document.querySelector(`.review-btn[data-client-id="${clientId}"]`);
+                if (cardBtn) {
+                    const card = cardBtn.closest('.past-event-card');
+                    if (card) {
+                        const ratingEl = card.querySelector('.event-rating');
+                        if (ratingEl) {
+                            ratingEl.innerHTML = `${renderStars(avg)} <span class="rating-text">${avg.toFixed(1)} / 5</span> <button class="review-btn" data-client-id="${clientId}">Review</button>`;
+                        }
+                    }
+                }
+                const modal = document.getElementById('review-modal');
+                if (modal) { modal.setAttribute('aria-hidden', 'true'); modal.classList.remove('show'); }
+                alert('Review saved locally — thank you!');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Unable to submit review.');
+        }
+    });
+
+    // Close modal when clicking outside the content
+    document.getElementById('review-modal')?.addEventListener('click', function (e) {
+        if (e.target === this) {
+            this.setAttribute('aria-hidden', 'true');
+            this.classList.remove('show');
+        }
+    });
+})();

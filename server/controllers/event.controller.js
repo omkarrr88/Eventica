@@ -114,4 +114,58 @@ const getEventById = async (req, res) => {
     }
 };
 
+const addReview = async (req, res) => {
+    try {
+        const { id } = req.params; // event id
+        const { rating, comment } = req.body;
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader) return res.status(401).json({ message: 'No token provided' });
+        const token = authHeader.split(' ')[1];
+        let decoded;
+        try { decoded = jwt.verify(token, process.env.SECRET_KEY); } catch (err) { return res.status(401).json({ message: 'Invalid token' }); }
+
+        const userId = decoded.userId;
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const event = await Event.findById(id);
+        if (!event) return res.status(404).json({ message: 'Event not found' });
+
+        // Prevent duplicate reviews from same user (simple approach)
+        const existing = event.reviews.find(r => r.user && r.user.toString() === userId.toString());
+        if (existing) return res.status(400).json({ message: 'You have already reviewed this event' });
+
+        const review = {
+            userName: user.username || user.email,
+            user: user._id,
+            rating: Math.max(1, Math.min(5, Number(rating) || 0)),
+            comment: comment || ''
+        };
+
+        event.reviews.push(review);
+        event.reviewCount = event.reviews.length;
+        // Calculate average
+        event.averageRating = event.reviews.reduce((s, r) => s + (r.rating || 0), 0) / (event.reviewCount || 1);
+
+        await event.save();
+        res.status(201).json({ message: 'Review added', review, averageRating: event.averageRating, reviewCount: event.reviewCount });
+    } catch (error) {
+        console.error('Add review error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+const getReviews = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const event = await Event.findById(id).select('reviews averageRating reviewCount');
+        if (!event) return res.status(404).json({ message: 'Event not found' });
+        res.status(200).json({ reviews: event.reviews || [], averageRating: event.averageRating || 0, reviewCount: event.reviewCount || 0 });
+    } catch (error) {
+        console.error('Get reviews error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 export { addEvent, deleteEvent, getAllEvents, getEventById };
