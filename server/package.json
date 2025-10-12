@@ -20,8 +20,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "mongodb-memory-server": "^8.16.1",
     "mongoose": "^8.18.1",
-    "nodemailer": "^7.0.9",
-    "mongodb-memory-server": "^8.11.0"
+    "nodemailer": "^7.0.9"
   }
 }

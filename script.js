@@ -112,8 +112,8 @@ function renderStars(avg) {
     const rounded = Math.round(avg || 0);
     let out = '';
     for (let i = 0; i < 5; i++) {
-        if (i < rounded) out += '<span class="star full">★</span>';
-        else out += '<span class="star">★</span>';
+        if (i < rounded) out += '<span class="star full">â˜…</span>';
+        else out += '<span class="star">â˜…</span>';
     }
     return out;
 }
@@ -616,7 +616,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem('eventica_token');
 
         // fetch existing reviews (server-backed or local)
-        existing.innerHTML = '<p>Loading reviews…</p>';
+        existing.innerHTML = '<p>Loading reviewsâ€¦</p>';
         try {
             if (eventId) {
                 // If attempting to open a server-backed event's reviews and user is not logged in,
@@ -626,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await resp.json();
                 const reviews = data.reviews || [];
                 if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
-                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'Anonymous')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'Anonymous')}</strong> â€” ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
                 // If not logged in, show a small note at the top of modal
                 if (!token) {
                     existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (clientId) {
                 const reviews = getLocalReviews(clientId);
                 if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
-                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'You')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'You')}</strong> â€” ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
                 if (!token) {
                     existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
                 }
@@ -710,7 +710,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
                 }
-                alert('Review submitted — thank you!');
+                alert('Review submitted â€” thank you!');
             } else if (clientId) {
                 // local store path
                 const reviews = getLocalReviews(clientId);
@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 const modal = document.getElementById('review-modal');
                 if (modal) { modal.setAttribute('aria-hidden', 'true'); modal.classList.remove('show'); }
-                alert('Review saved locally — thank you!');
+                alert('Review saved locally â€” thank you!');
             }
         } catch (err) {
             console.error(err);

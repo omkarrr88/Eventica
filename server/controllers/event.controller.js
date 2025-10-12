@@ -168,4 +168,4 @@ const getReviews = async (req, res) => {
     }
 };
 
-export { addEvent, deleteEvent, getAllEvents, getEventById };
+export { addEvent, deleteEvent, getAllEvents, getEventById, addReview, getReviews };
