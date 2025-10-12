@@ -4,31 +4,42 @@ import path from "path";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 // Load environment variables
 dotenv.config();
 
-// Validate required environment variables
-if (!process.env.MONGO_URI) {
-  console.error("❌ MONGO_URI not found in environment variables");
-  process.exit(1);
-}
+// SECRET_KEY is required for JWT signing/verification
 if (!process.env.SECRET_KEY) {
   console.error("❌ SECRET_KEY not found in environment variables");
   process.exit(1);
 }
 
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => {
+// Connect to MongoDB. If MONGO_URI is exactly "IN_MEMORY", use an in-memory MongoDB for local testing.
+async function connectMongo() {
+  try {
+    if (process.env.MONGO_URI === "IN_MEMORY") {
+      console.log("🧪 Starting in-memory MongoDB server...");
+      const mongod = await MongoMemoryServer.create();
+      const uri = mongod.getUri();
+      await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      console.log("✅ Connected to in-memory MongoDB");
+      // Keep mongod alive by not stopping it; process exit will cleanup.
+    } else {
+      if (!process.env.MONGO_URI) {
+        console.error("❌ MONGO_URI not found in environment variables");
+        process.exit(1);
+      }
+      await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+      console.log("✅ MongoDB connected successfully");
+    }
+  } catch (err) {
     console.error("❌ MongoDB connection error:", err);
     process.exit(1);
-  });
+  }
+}
+
+connectMongo();
 
 // Initialize Express app
 const app = express();

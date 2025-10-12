@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="./pastevents.css">
     <link rel="stylesheet" href="../customcursor.css">
+    <!-- flatpickr datepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <script src="https://kit.fontawesome.com/4cf6385dfa.js" crossorigin="anonymous"></script>
@@ -100,6 +102,27 @@
         <section class="past-events-section">
             <div class="container">
                 <h1 class="section-title">Past Events</h1>
+                <!-- Filters: date range + location -->
+                <div class="past-filters" id="past-filters" aria-label="Past events filters">
+                    <div class="filter-item">
+                        <label class="filter-label">From</label>
+                        <input type="date" id="filter-date-from" class="filter-date" aria-label="Filter from date">
+                    </div>
+                    <div class="filter-item">
+                        <label class="filter-label">To</label>
+                        <input type="date" id="filter-date-to" class="filter-date" aria-label="Filter to date">
+                    </div>
+                    <div class="filter-item">
+                        <label class="filter-label">Location</label>
+                        <select id="filter-location" class="filter-select" aria-label="Filter by location">
+                            <option value="">All locations</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button id="filter-reset" class="filter-reset" aria-label="Reset filters">Reset</button>
+                    </div>
+                </div>
+
                 <div class="event-grid" id="past-events">
                     <!-- Past event cards will be dynamically inserted here -->
                 </div>
@@ -164,7 +187,33 @@
     </a>
 
     <script src="../../script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="../customcursor.js"></script>
+
+    <!-- Review Modal -->
+    <div id="review-modal" class="review-modal" aria-hidden="true">
+        <div class="review-modal-content">
+            <button class="modal-close" id="review-modal-close">&times;</button>
+            <h3>Leave a review</h3>
+            <div id="review-target-title" class="review-target-title"></div>
+            <div id="existing-reviews" class="existing-reviews"></div>
+            <form id="review-form">
+                <label for="review-rating">Rating</label>
+                <select id="review-rating" required>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Very good</option>
+                    <option value="3">3 - Good</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="1">1 - Poor</option>
+                </select>
+                <label for="review-comment">Comment</label>
+                <textarea id="review-comment" rows="4" placeholder="Share your experience (optional)"></textarea>
+                <div class="modal-actions">
+                    <button type="submit" id="review-submit">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
