@@ -285,6 +285,10 @@ body.dark-mode .event-rating .rating-text { color: var(--light-text-color); }
 .star { color: var(--light-text-color); font-size: 0.95rem; margin-right: 2px; }
 .star.full { color: var(--primary-color); }
 
+/* Ensure inline SVG stars inherit currentColor and scale nicely */
+.star svg { display: inline-block; vertical-align: text-bottom; fill: currentColor; width: 1rem; height: 1rem; }
+.event-rating .star { margin-right: 6px; }
+
 /* Modal labels and text: force black per request */
 .review-modal-content label,
 .review-modal-content .review-target-title,

@@ -110,10 +110,16 @@ function createEventCard(event, isPastEvent = false) {
 function renderStars(avg) {
     // Render stars rounded to nearest integer for reliable display
     const rounded = Math.round(avg || 0);
+    const starSVG = (filled) => {
+        // Inline SVG star (path from a common star icon). Use currentColor so CSS controls color.
+        return `<span class="star ${filled ? 'full' : ''}" aria-hidden="true">` +
+            `<svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">` +
+            `<path d="M12 .587l3.668 7.431L23.327 9.6l-5.659 5.517L18.996 24 12 20.013 5.004 24l1.328-8.883L.673 9.6l7.659-1.582L12 .587z"/>` +
+            `</svg></span>`;
+    };
     let out = '';
     for (let i = 0; i < 5; i++) {
-        if (i < rounded) out += '<span class="star full">â˜…</span>';
-        else out += '<span class="star">â˜…</span>';
+        out += starSVG(i < rounded);
     }
     return out;
 }
@@ -587,6 +593,66 @@ document.addEventListener("DOMContentLoaded", () => {
         const s = reviews.reduce((acc, r) => acc + (r.rating || 0), 0);
         return s / reviews.length;
     }
+    // Robust updater: find any visible rating blocks for an eventId or clientId and update them
+    function updateRatingDisplay({ eventId = null, clientId = null, avg = 0 } = {}) {
+        try {
+            // normalize avg
+            const avgNum = Number(avg) || 0;
+            const html = `${renderStars(avgNum)} <span class="rating-text">${avgNum.toFixed(1)} / 5</span>`;
+
+            // 1) Update any .event-rating elements inside a card that has matching data-event-id or data-client-id
+            const cardSelectors = [];
+            if (eventId) cardSelectors.push(`[data-event-id="${eventId}"]`);
+            if (clientId) cardSelectors.push(`[data-client-id="${clientId}"]`);
+            if (cardSelectors.length) {
+                // find elements that might be the card container
+                const cards = new Set();
+                cardSelectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach(el => {
+                        // if the selector hits a button or inner element, climb to a sensible container
+                        const card = el.closest('.past-event-card, .event-card') || el.closest('[data-client-id]') || el.closest('[data-event-id]');
+                        if (card) cards.add(card);
+                    });
+                });
+                // Update .event-rating inside each card if present
+                cards.forEach(card => {
+                    const ratingEl = card.querySelector('.event-rating');
+                    if (ratingEl) {
+                        // If the card already contains a review button, keep it; otherwise append one
+                        const hasBtn = ratingEl.querySelector('.review-btn');
+                        ratingEl.innerHTML = html + (hasBtn ? ` <button class="review-btn" ${eventId ? `data-event-id="${eventId}"` : ''}${clientId ? `data-client-id="${clientId}"` : ''}>Review</button>` : '');
+                    }
+                });
+            }
+
+            // 2) Update any standalone .event-rating elements that have a sibling or parent with matching data attrs
+            if (eventId) {
+                document.querySelectorAll(`.event-rating`).forEach(ratingEl => {
+                    // check if nearby element contains the data-event-id
+                    const parentWithId = ratingEl.closest(`[data-event-id="${eventId}"]`) || ratingEl.parentElement?.querySelector(`[data-event-id="${eventId}"]`);
+                    if (parentWithId) {
+                        ratingEl.innerHTML = html + ` <button class="review-btn" data-event-id="${eventId}">Review</button>`;
+                    }
+                });
+            }
+            if (clientId) {
+                document.querySelectorAll(`.event-rating`).forEach(ratingEl => {
+                    const parentWithId = ratingEl.closest(`[data-client-id="${clientId}"]`) || ratingEl.parentElement?.querySelector(`[data-client-id="${clientId}"]`);
+                    if (parentWithId) {
+                        ratingEl.innerHTML = html + ` <button class="review-btn" data-client-id="${clientId}">Review</button>`;
+                    }
+                });
+            }
+
+            // 3) As a fallback, update the first visible .event-rating on the page
+            const anyRating = document.querySelector('.event-rating');
+            if (anyRating && (!document.querySelectorAll('.event-rating').length || !document.querySelectorAll('.event-rating').some(r => r.textContent && r.textContent.includes('/ 5')))) {
+                anyRating.innerHTML = html;
+            }
+        } catch (err) {
+            console.error('updateRatingDisplay error', err);
+        }
+    }
     // Open modal when clicking any review button (delegated)
     document.addEventListener('click', async function (e) {
         const btn = e.target.closest && e.target.closest('.review-btn');
@@ -616,7 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem('eventica_token');
 
         // fetch existing reviews (server-backed or local)
-        existing.innerHTML = '<p>Loading reviewsâ€¦</p>';
+    existing.innerHTML = '<p>Loading reviews…</p>';
         try {
             if (eventId) {
                 // If attempting to open a server-backed event's reviews and user is not logged in,
@@ -626,7 +692,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await resp.json();
                 const reviews = data.reviews || [];
                 if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
-                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'Anonymous')}</strong> â€” ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'Anonymous')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
                 // If not logged in, show a small note at the top of modal
                 if (!token) {
                     existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
@@ -634,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (clientId) {
                 const reviews = getLocalReviews(clientId);
                 if (reviews.length === 0) existing.innerHTML = '<p>No reviews yet. Be the first!</p>';
-                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'You')}</strong> â€” ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
+                else existing.innerHTML = reviews.map(r => `<div class="existing-review"><strong>${escapeHtml(r.userName||'You')}</strong> — ${renderStars(r.rating)}<div class="review-comment">${escapeHtml(r.comment||'')}</div></div>`).join('');
                 if (!token) {
                     existing.innerHTML = `<div class="login-needed">Please <a href="/assets/register/register.html">log in</a> to submit a review.</div>` + existing.innerHTML;
                 }
@@ -659,10 +725,12 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.classList.remove('show');
     });
 
-    // Submit review
-    document.getElementById('review-form')?.addEventListener('submit', async function (e) {
+    // Submit review (use delegated listener so it works even if form is inserted after this script runs)
+    document.addEventListener('submit', async function (e) {
+        const formEl = e.target;
+        if (!formEl || formEl.id !== 'review-form') return;
         e.preventDefault();
-        const form = e.currentTarget;
+        const form = formEl;
     const eventId = form.dataset.eventId;
     const clientId = form.dataset.clientId;
     const rating = parseInt(document.getElementById('review-rating').value || 0, 10);
@@ -694,43 +762,45 @@ document.addEventListener("DOMContentLoaded", () => {
                     const errText = await resp.text();
                     throw new Error(errText || 'Failed to submit review');
                 }
-                const data = await resp.json();
+                const postRespData = await resp.json();
                 // close modal
                 const modal = document.getElementById('review-modal');
                 if (modal) { modal.setAttribute('aria-hidden', 'true'); modal.classList.remove('show'); }
-                // update the card's rating display (if present)
-                const cardBtn = document.querySelector(`.review-btn[data-event-id="${eventId}"]`);
-                if (cardBtn) {
-                    const card = cardBtn.closest('.past-event-card');
-                    if (card) {
-                        const ratingEl = card.querySelector('.event-rating');
-                        if (ratingEl) {
-                            const avg = (data.averageRating || 0);
-                            ratingEl.innerHTML = `${renderStars(avg)} <span class="rating-text">${avg.toFixed(1)} / 5</span> <button class="review-btn" data-event-id="${eventId}">Review</button>`;
+                // debug: log server response
+                console.debug('Review POST response data:', postRespData);
+                // Re-fetch the reviews endpoint for authoritative averageRating
+                (async function refreshAndUpdate() {
+                    try {
+                        const r = await fetch(`/api/events/${eventId}/reviews`);
+                        if (r.ok) {
+                            const rd = await r.json();
+                            console.debug('Re-fetched reviews data:', rd);
+                            updateRatingDisplay({ eventId, avg: rd.averageRating || postRespData.averageRating || 0 });
+                            return;
                         }
+                        console.warn('Re-fetch reviews returned status', r.status);
+                    } catch (e) {
+                        console.error('Error re-fetching reviews:', e);
                     }
-                }
-                alert('Review submitted â€” thank you!');
+                    // fallback: use POST response average if re-fetch fails
+                    updateRatingDisplay({ eventId, avg: postRespData.averageRating || 0 });
+                    // additional delayed fallback in 500ms in case the DOM wasn't ready
+                    setTimeout(() => updateRatingDisplay({ eventId, avg: postRespData.averageRating || 0 }), 500);
+                })();
+                alert('Review submitted — thank you!');
             } else if (clientId) {
                 // local store path
                 const reviews = getLocalReviews(clientId);
                 reviews.push({ userName: 'You', rating, comment, createdAt: new Date().toISOString() });
                 setLocalReviews(clientId, reviews);
                 const avg = computeAverage(reviews);
-                // update card
-                const cardBtn = document.querySelector(`.review-btn[data-client-id="${clientId}"]`);
-                if (cardBtn) {
-                    const card = cardBtn.closest('.past-event-card');
-                    if (card) {
-                        const ratingEl = card.querySelector('.event-rating');
-                        if (ratingEl) {
-                            ratingEl.innerHTML = `${renderStars(avg)} <span class="rating-text">${avg.toFixed(1)} / 5</span> <button class="review-btn" data-client-id="${clientId}">Review</button>`;
-                        }
-                    }
-                }
+                // update all matching local cards' rating display
+                // debug: log local save and update rating displays on the page for this clientId
+                console.debug('Local reviews saved, computed avg:', avg, 'for clientId', clientId);
+                updateRatingDisplay({ clientId, avg });
                 const modal = document.getElementById('review-modal');
                 if (modal) { modal.setAttribute('aria-hidden', 'true'); modal.classList.remove('show'); }
-                alert('Review saved locally â€” thank you!');
+                alert('Review saved locally — thank you!');
             }
         } catch (err) {
             console.error(err);
