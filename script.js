@@ -386,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // User is logged in - show dashboard link and logout
             const authHTML = `
                 <li><a href="/dashboard.html">Dashboard</a></li>
-                <li><a href="#" onclick="logout()">Logout (${user.username})</a></li>
             `;
             navbar.innerHTML += authHTML;
         } else {
